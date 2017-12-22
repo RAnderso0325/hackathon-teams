@@ -13,17 +13,13 @@ router.post('/', function(req, res) {
   res.redirect('/teams');
 });
 
-router.delete('/:name',function(req,res){
-	teamService.deleteTeam(req.params.name);
-	res.send('I am done deleting');
-});
-
 router.get('/new', function(req, res) {
   res.render('teams/new');
 });
 
-router.get('/edit', function(req,res){
-	res.send('edit form');
+router.get('/edit/:name', function(req,res){
+  var team = teamService.getTeam(req.params.name);
+  res.render('teams/edit', {team: team});
 });
 
 router.get('/:name', function(req, res) {
@@ -34,8 +30,13 @@ router.get('/:name', function(req, res) {
 });
 
 router.put('/:name', function(req,res){
-	console.log('name:', req.params.name);
-	res.send('in the put route');
+  teamService.editTeam(req.params.name, req.body);
+  res.send('success m-er f-ers');
+});
+
+router.delete('/:name',function(req,res){
+	teamService.deleteTeam(req.params.name);
+	res.send('I am done deleting');
 });
 
 module.exports = router;
